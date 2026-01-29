@@ -62,7 +62,13 @@ spec:
       image: alpine/flake8:latest
       workingDir: $(workspaces.source.path)
       command: ["flake8"]
-      args: ["service"]
+      # Gunakan argumen ini untuk memperbolehkan baris hingga 127 karakter
+      args: [
+        "service",
+        "--count",
+        "--max-line-length=127",
+        "--statistics"
+      ]
 
 ---
 apiVersion: tekton.dev/v1beta1
