@@ -95,9 +95,13 @@ spec:
       image: quay.io/buildah/stable:v1.23.3
       workingDir: $(workspaces.source.path)
       script: |
-        buildah bud -f $(params.DOCKERFILE) -t $(params.IMAGE) $(params.CONTEXT)
+        # Menggunakan storage driver vfs agar bisa jalan tanpa privileged mode
+        buildah --storage-driver=vfs bud -f $(params.DOCKERFILE) -t $(params.IMAGE) $(params.CONTEXT)
       securityContext:
-        privileged: true
+        privileged: false
+        capabilities:
+          add:
+            - SETFCAP
 
 ---
 apiVersion: tekton.dev/v1beta1
